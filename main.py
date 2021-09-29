@@ -1,16 +1,48 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def applyCipher(plaintext):
+    key = ''
+    while 1:
+        key = input("Please enter the key you would like to use for the Vigenere Cipher: ")
+        response = input("Is '" + key + "' the key you want to use? [y/n] ")
+        key = key.lower()
+        if response == "y" or response == "yes":
+            break
+    plaintext = plaintext.lower()
+    plaintextList = convertToNum(plaintext)
+    print("The plaintext converted to numbers, where a = 0 and z = 25 is:", plaintextList)
+    keyList = convertToNum(key)
+    print("The key converted to numbers, where a = 0 and z = 25 is: ", keyList)
+    keyLength = len(keyList)
+    for i in range(0,len(plaintextList)):
+        plaintextList[i] = (plaintextList[i] + keyList[i % keyLength]) % 26
+    print("After running the Vigenere Cipher, the new numerical representation is:", plaintextList)
+    cipherText = convertToString(plaintextList)
+    print("This leaves us with the final Cipher Text of:", cipherText)
+    return cipherText
+
+
+
+def convertToNum(string):
+    result = []
+    for i in string:
+        result.append(ord(i) - 97)
+    return result
+
+def convertToString(lst):
+    result = ''
+    for i in lst:
+        result+= chr(i+97)
+    return result
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    while 1:
+        plaintext = input("Please enter the plaintext you would like to use for the Vigenere Cipher: ")
+        response = input("Is '" + plaintext + "' the plaintext you want to use? [y/n] ")
+        if response == "y" or response == "yes":
+            apply = input("Would you like to apply a Vigenere Cipher on plaintext? [y/n] ")
+            if apply == "y" or apply == "yes":
+                applyCipher(plaintext.replace(" ",""))
+                break
