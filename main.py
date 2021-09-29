@@ -21,6 +21,25 @@ def applyCipher(plaintext):
     print("This leaves us with the final Cipher Text of:", cipherText)
     return cipherText
 
+def findKey(plaintext):
+    ciphertext = ''
+    while 1:
+        ciphertext = input("Please enter the ciphertext you would like to use for the Vigenere Cipher: ")
+        response = input("Is '" + ciphertext + "' the key you want to use? [y/n] ")
+        ciphertext = ciphertext.lower().replace(" ", "")
+        if response == "y" or response == "yes":
+            break
+    plaintext = plaintext.lower()
+    plaintextList = convertToNum(plaintext)
+    print("The plaintext converted to numbers, where a = 0 and z = 25 is:", plaintextList)
+    cipherList = convertToNum(ciphertext)
+    print("The ciphertext converted to numbers, where a = 0 and z = 25 is: ", cipherList)
+    pattern = []
+    for i in range(0,len(cipherList)):
+        pattern.append((cipherList[i] - plaintextList[i]) % 26)
+    print("If we subtract the plaintext from the ciphertext, we are left with the following pattern:", pattern)
+    return pattern
+
 
 
 def convertToNum(string):
@@ -45,4 +64,8 @@ if __name__ == '__main__':
             apply = input("Would you like to apply a Vigenere Cipher on plaintext? [y/n] ")
             if apply == "y" or apply == "yes":
                 applyCipher(plaintext.replace(" ",""))
+                break
+            deduce = input("Would you like to decode a Vigenere Cipher using plaintext and ciphertext? [y/n] ")
+            if deduce == "y" or deduce == "yes":
+                findKey(plaintext.replace(" ", ""))
                 break
