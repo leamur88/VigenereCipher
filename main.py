@@ -1,5 +1,3 @@
-
-
 def applyCipher(plaintext):
     key = ''
     while 1:
@@ -8,14 +6,18 @@ def applyCipher(plaintext):
         key = key.lower()
         if response == "y" or response == "yes":
             break
+            
     plaintext = plaintext.lower()
     plaintextList = convertToNum(plaintext)
     print("The plaintext converted to numbers, where a = 0 and z = 25 is:", plaintextList)
+    
     keyList = convertToNum(key)
     print("The key converted to numbers, where a = 0 and z = 25 is: ", keyList)
+    
     keyLength = len(keyList)
     for i in range(0,len(plaintextList)):
         plaintextList[i] = (plaintextList[i] + keyList[i % keyLength]) % 26
+        
     print("After running the Vigenere Cipher, the new numerical representation is:", plaintextList)
     cipherText = convertToString(plaintextList)
     print("This leaves us with the final Cipher Text of:", cipherText)
@@ -29,12 +31,16 @@ def findKey(plaintext):
         ciphertext = ciphertext.lower().replace(" ", "")
         if response == "y" or response == "yes":
             break
+            
     plaintext = plaintext.lower()
     plaintextList = convertToNum(plaintext)
+    
     print("The plaintext converted to numbers, where a = 0 and z = 25 is:", plaintextList)
     cipherList = convertToNum(ciphertext)
+    
     print("The ciphertext converted to numbers, where a = 0 and z = 25 is: ", cipherList)
     pattern = []
+    
     for i in range(0,len(cipherList)):
         pattern.append((cipherList[i] - plaintextList[i]) % 26)
     print("If we subtract the plaintext from the ciphertext, we are left with the following pattern:", pattern)
