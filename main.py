@@ -1,4 +1,4 @@
-def applyCipher(plaintext):
+def applyCipher(plaintext, decode):
     key = ''
     while 1:
         key = input("Please enter the key you would like to use for the Vigenere Cipher: ")
@@ -15,8 +15,12 @@ def applyCipher(plaintext):
     print("The key converted to numbers, where a = 0 and z = 25 is: ", keyList)
     
     keyLength = len(keyList)
-    for i in range(0,len(plaintextList)):
-        plaintextList[i] = (plaintextList[i] + keyList[i % keyLength]) % 26
+    if decode:
+        for i in range(0,len(plaintextList)):
+            plaintextList[i] = (plaintextList[i] - keyList[i % keyLength]) % 26
+    else:
+        for i in range(0,len(plaintextList)):
+            plaintextList[i] = (plaintextList[i] + keyList[i % keyLength]) % 26
         
     print("After running the Vigenere Cipher, the new numerical representation is:", plaintextList)
     cipherText = convertToString(plaintextList)
@@ -27,8 +31,11 @@ def findKey(plaintext):
     ciphertext = ''
     while 1:
         ciphertext = input("Please enter the ciphertext you would like to use for the Vigenere Cipher: ")
-        response = input("Is '" + ciphertext + "' the key you want to use? [y/n] ")
         ciphertext = ciphertext.lower().replace(" ", "")
+        if len(ciphertext) != len(plaintext):
+            print("Please make sure that the length of the cipher text is the same length as the plain text")
+            continue
+        response = input("Is '" + ciphertext + "' the key you want to use? [y/n] ")
         if response == "y" or response == "yes":
             break
             
@@ -63,15 +70,31 @@ def convertToString(lst):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    operation = ''
     while 1:
-        plaintext = input("Please enter the plaintext you would like to use for the Vigenere Cipher: ")
-        response = input("Is '" + plaintext + "' the plaintext you want to use? [y/n] ")
-        if response == "y" or response == "yes":
-            apply = input("Would you like to apply a Vigenere Cipher on plaintext? [y/n] ")
-            if apply == "y" or apply == "yes":
-                applyCipher(plaintext.replace(" ",""))
+        operation = input("Would you like to Encode, Decode, or find the Key of a Vigenere Cipher? [encode, decode, key] ")
+        operation = operation.lower()
+        if operation == 'encode' or operation == 'decode' or operation == 'key':
+            break
+        print("Not a valid option, make sure to choose either 'encode', 'decode', or 'key'")
+    if operation == 'encode':
+        while 1:
+            plaintext = input("Please enter the plaintext you would like to use for the Vigenere Cipher: ")
+            response = input("Is '" + plaintext + "' the plaintext you want to use? [y/n] ")
+            if response == "y" or response == "yes":
+                applyCipher(plaintext.replace(" ", ""), False)
                 break
-            deduce = input("Would you like to decode a Vigenere Cipher using plaintext and ciphertext? [y/n] ")
-            if deduce == "y" or deduce == "yes":
+    elif operation == 'decode':
+        while 1:
+            plaintext = input("Please enter the ciphertext you would like to use for the Vigenere Cipher: ")
+            response = input("Is '" + plaintext + "' the ciphertext you want to use? [y/n] ")
+            if response == "y" or response == "yes":
+                applyCipher(plaintext.replace(" ", ""), True)
+                break
+    else:
+        while 1:
+            plaintext = input("Please enter the plaintext you would like to use for the Vigenere Cipher: ")
+            response = input("Is '" + plaintext + "' the plaintext you want to use? [y/n] ")
+            if response == "y" or response == "yes":
                 findKey(plaintext.replace(" ", ""))
                 break
